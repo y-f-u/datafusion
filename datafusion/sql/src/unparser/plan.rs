@@ -125,6 +125,9 @@ impl Unparser<'_> {
             LogicalPlan::TableScan(scan) => {
                 let mut builder = TableRelationBuilder::default();
                 let mut table_parts = vec![];
+                if let Some(catalog_name) = scan.table_name.catalog() {
+                    table_parts.push(self.new_ident(catalog_name.to_string()));
+                }
                 if let Some(schema_name) = scan.table_name.schema() {
                     table_parts.push(self.new_ident(schema_name.to_string()));
                 }
